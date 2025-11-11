@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>MQTT Web Client</title>
+    <script src = ="https://unpkg.com/paho-mqtt/mqttws31.min.js"></script>
+</head>
+<body>
+    <h2>MQTT Web Interface</h2>
+
+    <label>Broker:</label>
+    <input id="broker" value- "makerspaceserve.bc.edu" />
+    <label>Port:</label>
+    <input id="port" value="8000" />
+    <br><br>
+
+    <lable>Topic:</lable>
+    <input id="topic" value="test" />
+    <br><br>
+
+    <lable>Message:</lable>
+    <input id="message" />
+    <button onclick="sendMessage()">Send</button>
+    <br><br>
+
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <br><br>
+
+    <button onclick="up()">Up</button>
+    <button onclick="down()">Down</button>
+    <button onclick="left()">Left</button>
+    <button onclick="right()">Right</button>
+    <br><br>
+
+    <h3>Received Messages:</h3>
+    <pre id="output"></pre>
+
+<script>
+    let client;
+
+    function connect(){
+        const broker = document.getElementById("broker".value);
+        const port = parseInt(document.getElementById("port").value);
+        const clientId = "webclient_" + Math.floor(Math.random() * 10000);
+
+        client = new Patho.MQTT.Client(broker, port, clientId);
+
+        client.onMessageArrived = (message) => {
+            document.getElementById("output").textContent +=
+            `\n${message.destinationName}: ${message.payloadString}`;
+        };
+        client.connect({
+            onSuccess: () => {
+                console.log("Connected");
+                const topic = document.getElementById("topic").value;
+                client.subscribe(topic);
+            },
+            onFailure: (err) => console.error("Connection Failed:", err)
+        });
+    }
+
+    function sendMessage() {
+        if (!client || !client.isConnected()) return alert("Not connected!");
+        const topic = document.getElementById("topic").value;
+        const messageText = document.getElementById("message").value;
+        const message = new Paho.MQTT.Message(messageText);
+        message.destinationName = topic;
+        client.send(message);
+
+    }
+
+    function disconnect() {
+      if (client && client.isConnected()) {
+        client.disconnect();
+        console.log("Disconnected");
+      }
+    }
+
+
+
+</script>
+
+    
+
+</body>
+</html>
