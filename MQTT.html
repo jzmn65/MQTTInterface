@@ -1,19 +1,67 @@
 <html>
+
+<style>
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center ;
+        justify-content: center;
+        margin: auto;
+        padding: 30px;
+        background-color:lavender;
+    }
+
+    h2 {
+    margin: 5px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 35px;
+    
+    }
+
+    .container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px 35px;
+    width: 400px;
+    margin-top: 20px;
+
+    
+    }
+
+    .titleContainer {
+        display: flex;
+        justify-content: left;
+    }
+
+
+</style>
 <head>
     <title>MQTT Web Client</title>
-    <script src = ="https://unpkg.com/paho-mqtt/mqttws31.min.js"></script>
+    <script src = "https://unpkg.com/paho-mqtt/mqttws31.min.js"></script>
 </head>
 <body>
+    
+    <div class ="titleContainer">
+ 
     <h2>MQTT Web Interface</h2>
+       </div>
 
+<div class="container">
     <label>Broker:</label>
-    <input id="broker" value- "makerspaceserve.bc.edu" />
+    <input id="broker"/>
     <label>Port:</label>
-    <input id="port" value="8000" />
+    <input id="port"/>
     <br><br>
+    <!-- <label>Subscriber:</label>
+    <input id="subscriber" /> -->
 
     <lable>Topic:</lable>
-    <input id="topic" value="test" />
+    <input id="topic" />
     <br><br>
 
     <lable>Message:</lable>
@@ -25,22 +73,36 @@
     <button onclick="disconnect()">Disconnect</button>
     <br><br>
 
-    <button onclick="up()">Up</button>
-    <button onclick="down()">Down</button>
-    <button onclick="left()">Left</button>
-    <button onclick="right()">Right</button>
+    <button onclick="sendMessage('up')">Up</button>
+    <button onclick="sendMessage('down')">Down</button>
+    <button onclick="sendMessage('left')">Left</button>
+    <button onclick="sendMessage('right')">Right</button>
     <br><br>
+
+    <button onclick="zero()">0</button>
+    <button onclick="one()">1</button>
+    <button onclick="two()">2</button>
+    <button onclick="three()">3</button>
+     <button onclick="four()">4</button>
+    <button onclick="five()">5</button>
+    <button onclick="six()">6</button>
+    <button onclick="seven()">7</button>
+     <button onclick="eight()">8</button>
+    <button onclick="nine()">9</button>
+
+
 
     <h3>Received Messages:</h3>
     <pre id="output"></pre>
+    </div>
 
 <script>
     let client;
 
     function connect(){
-        const broker = document.getElementById("broker".value);
+        const broker = document.getElementById("broker").value;
         const port = parseInt(document.getElementById("port").value);
-        const clientId = "webclient_" + Math.floor(Math.random() * 10000);
+        const clientId = "webclient_" + Math.floor(Math.random() * 10000); //clients need unique ID so func creates one automatically,,,, should it not(?)
 
         client = new Patho.MQTT.Client(broker, port, clientId);
 
@@ -74,6 +136,22 @@
         console.log("Disconnected");
       }
     }
+
+    // function up() {
+
+    // }
+
+    // function down() {
+
+    // }
+    
+    // function left() {
+
+    // }
+
+    // function right() {
+
+    // }
 
 
 
